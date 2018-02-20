@@ -7,35 +7,13 @@ const hostname = 'localhost';
 const port = 3000;
 
 const app = exprees();
+const dishRouter = require('./routers/dishRouter');
 
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(exprees.static(__dirname+'/public'));
 
-app.all('/dishes',(req,res,next)=>{
-    res.statusCode = 200;
-    res.setHeader('Content-Type','text/plain');
-    next();
-});
-
-app.get('/dishes', (req,res,next) =>{
-    res.end('Will send all the details to you!');
-});
-
-app.post('/dishes',(req,res,next)=>{
-    res.end('Will insert all the entries :'+req.body.name+
-    'with details as'+ req.body.description);
-});
-
-app.put('/dishes',(req,res,next)=>{
-    res.statusCode = 403;
-    res.end('put operation not supported on dishes');
-});
-
-app.delete('/dishes',(req,res,next)=>{
-    // Dangerous operation
-    res.end('Deleting all the dishes!');
-});
+app.use('/dishes',dishRouter); 
 
 app.get('/dishes/:dishId', (req,res,next) =>{
     res.end('Will send all details of '+req.params.dishId+' to you!');
